@@ -21,7 +21,7 @@ ros::NodeHandle nh;
 // Tracks the direction of rotation.
 #define ENC_IN_RIGHT_A 3
 
-#define ENC_IN_RIGHT_B 11
+#define ENC_IN_RIGHT_B 10
  
 // True = Forward; False = Reverse
 boolean Direction_left = true;
