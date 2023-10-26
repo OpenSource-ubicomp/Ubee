@@ -6,9 +6,11 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-        - /TF1
         - /TF1/Frames1
+        - /RobotModel1
         - /RobotModel1/Links1
+        - /Imu1
+        - /Axes1
       Splitter Ratio: 0.5
     Tree Height: 682
   - Class: rviz/Selection
@@ -62,9 +64,9 @@ Visualization Manager:
       Frames:
         All Enabled: false
         imu_link:
-          Value: true
+          Value: false
         map:
-          Value: true
+          Value: false
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -93,6 +95,25 @@ Visualization Manager:
       Update Interval: 0
       Value: true
       Visual Enabled: true
+    - Alpha: 1
+      Class: rviz_plugin_tutorials/Imu
+      Color: 204; 51; 204
+      Enabled: false
+      History Length: 1
+      Name: Imu
+      Queue Size: 10
+      Topic: /imu/data
+      Unreliable: false
+      Value: false
+    - Alpha: 1
+      Class: rviz/Axes
+      Enabled: true
+      Length: 1
+      Name: Axes
+      Radius: 0.10000000149011612
+      Reference Frame: imu_link
+      Show Trail: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -121,7 +142,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.6793758869171143
+      Distance: 9.310041427612305
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -157,5 +178,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 1414
-  X: 72
-  Y: 81
+  X: 472
+  Y: 161

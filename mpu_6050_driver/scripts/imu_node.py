@@ -28,6 +28,8 @@ def read_word_2c(adr):
     else:
         return val
 
+
+
 def publish_temp(timer_event):
     temp_msg = Temperature()
     temp_msg.header.frame_id = IMU_FRAME
