@@ -45,6 +45,7 @@ def publish_imu(timer_event):
     accel_y = read_word_2c(ACCEL_YOUT_H) / 16384.0
     accel_z = read_word_2c(ACCEL_ZOUT_H) / 16384.0
     
+    #fix
     # Calculate a quaternion representing the orientation
     accel = accel_x, accel_y, accel_z
     ref = np.array([0, 0, 1])
@@ -58,17 +59,18 @@ def publish_imu(timer_event):
     gyro_y = read_word_2c(GYRO_YOUT_H) / 131.0
     gyro_z = read_word_2c(GYRO_ZOUT_H) / 131.0
     
+    #fix
     # Load up the IMU message
     o = imu_msg.orientation
     o.x, o.y, o.z, o.w = orientation
 
-    imu_msg.linear_acceleration.x = accel_x
-    imu_msg.linear_acceleration.y = accel_y
-    imu_msg.linear_acceleration.z = accel_z
+    imu_msg.linear_acceleration.x = accel_x*9.8
+    imu_msg.linear_acceleration.y = accel_y*9.8
+    imu_msg.linear_acceleration.z = accel_z*9.8
 
-    imu_msg.angular_velocity.x = gyro_x
-    imu_msg.angular_velocity.y = gyro_y
-    imu_msg.angular_velocity.z = gyro_z
+    imu_msg.angular_velocity.x = gyro_x*0.0174
+    imu_msg.angular_velocity.y = gyro_y*0.0174
+    imu_msg.angular_velocity.z = gyro_z*0.0174
 
     imu_msg.header.stamp = rospy.Time.now()
 
@@ -90,8 +92,8 @@ if __name__ == '__main__':
 
     bus.write_byte_data(ADDR, PWR_MGMT_1, 0)
 
-    temp_pub = rospy.Publisher('temperature', Temperature, queue_size=10)
-    imu_pub = rospy.Publisher('imu/data', Imu, queue_size=10)
+    temp_pub = rospy.Publisher('temperature', Temperature,queue_size=10)
+    imu_pub = rospy.Publisher('imu/data_raw', Imu,queue_size=10)
     imu_timer = rospy.Timer(rospy.Duration(0.02), publish_imu)
     temp_timer = rospy.Timer(rospy.Duration(10), publish_temp)
     rospy.spin()

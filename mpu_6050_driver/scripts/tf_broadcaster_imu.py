@@ -1,4 +1,4 @@
-#!/usr/bin/env python3  
+#!/usr/bin/env python3
 import rospy
 import tf_conversions
 import tf2_ros
@@ -11,7 +11,7 @@ def handle_imu_pose(msg):
     t = geometry_msgs.msg.TransformStamped()
 
     t.header.stamp = rospy.Time.now()
-    t.header.frame_id = "plane"
+    t.header.frame_id = "map"
     t.child_frame_id = "imu_link"
     t.transform.translation.x = 0
     t.transform.translation.y = 0
