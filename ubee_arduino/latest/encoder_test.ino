@@ -7,12 +7,12 @@
  
 // Encoder output to Arduino Interrupt pin. Tracks the tick count.
 #define ENC_IN_LEFT_A 2
-#define ENC_IN_RIGHT_A 3
- 
+#define ENC_IN_LEFT_B 4
+
 // Other encoder output to Arduino to keep track of wheel direction
 // Tracks the direction of rotation.
-#define ENC_IN_LEFT_B 4
-#define ENC_IN_RIGHT_B 11
+#define ENC_IN_RIGHT_A 3
+#define ENC_IN_RIGHT_B 5
  
 // True = Forward; False = Reverse
 boolean Direction_left = true;
@@ -27,7 +27,7 @@ volatile int left_wheel_tick_count = 0;
 volatile int right_wheel_tick_count = 0;
  
 // One-second interval for measurements
-int interval = 200;
+int interval = 100;
 long previousMillis = 0;
 long currentMillis = 0;
  
@@ -83,7 +83,7 @@ void right_wheel_tick() {
       right_wheel_tick_count = encoder_minimum;
     }
     else {
-      right_wheel_tick_count++;  
+      right_wheel_tick_count--;  
     }    
   }
   else {
@@ -91,7 +91,7 @@ void right_wheel_tick() {
       right_wheel_tick_count = encoder_maximum;
     }
     else {
-      right_wheel_tick_count--;  
+      right_wheel_tick_count++;  
     }   
   }
 }
@@ -114,7 +114,7 @@ void left_wheel_tick() {
       left_wheel_tick_count = encoder_minimum;
     }
     else {
-      left_wheel_tick_count++;  
+      left_wheel_tick_count--;  
     }  
   }
   else {
@@ -122,7 +122,7 @@ void left_wheel_tick() {
       left_wheel_tick_count = encoder_maximum;
     }
     else {
-      left_wheel_tick_count--;  
+      left_wheel_tick_count++;  
     }   
   }
 }
