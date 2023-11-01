@@ -1,128 +1,75 @@
-/*
- * Author: Automatic Addison
- * Website: https://automaticaddison.com
- * Description: Calculate the accumulated ticks for each wheel using the 
- * built-in encoder (forward = positive; reverse = negative) 
- */
- 
-// Encoder output to Arduino Interrupt pin. Tracks the tick count.
-#define ENC_IN_LEFT_A 2
-#define ENC_IN_RIGHT_A 3
- 
-// Other encoder output to Arduino to keep track of wheel direction
-// Tracks the direction of rotation.
-#define ENC_IN_LEFT_B 4
-#define ENC_IN_RIGHT_B 11
- 
-// True = Forward; False = Reverse
-boolean Direction_left = true;
-boolean Direction_right = true;
- 
-// Minumum and maximum values for 16-bit integers
-const int encoder_minimum = -32768;
-const int encoder_maximum = 32767;
- 
-// Keep track of the number of wheel ticks
-volatile int left_wheel_tick_count = 0;
-volatile int right_wheel_tick_count = 0;
- 
-// One-second interval for measurements
-int interval = 200;
-long previousMillis = 0;
-long currentMillis = 0;
- 
-void setup() {
- 
-  // Open the serial port at 9600 bps
-  Serial.begin(9600); 
- 
-  // Set pin states of the encoder
-  pinMode(ENC_IN_LEFT_A , INPUT_PULLUP);
-  pinMode(ENC_IN_LEFT_B , INPUT);
-  pinMode(ENC_IN_RIGHT_A , INPUT_PULLUP);
-  pinMode(ENC_IN_RIGHT_B , INPUT);
- 
-  // Every time the pin goes high, this is a tick
-  attachInterrupt(digitalPinToInterrupt(ENC_IN_LEFT_A), left_wheel_tick, RISING);
-  attachInterrupt(digitalPinToInterrupt(ENC_IN_RIGHT_A), right_wheel_tick, RISING);
-}
- 
-void loop() {
- 
-  // Record the time
-  currentMillis = millis();
- 
-  // If one second has passed, print the number of ticks
-  if (currentMillis - previousMillis > interval) {
-     
-    previousMillis = currentMillis;
- 
-    Serial.println("Number of Ticks: ");
-    Serial.println(right_wheel_tick_count);
-    Serial.println(left_wheel_tick_count);
-    Serial.println();
-  }
-}
- 
-// Increment the number of ticks
-void right_wheel_tick() {
-   
-  // Read the value for the encoder for the right wheel
-  int val = digitalRead(ENC_IN_RIGHT_B);
- 
-  if(val == LOW) {
-    Direction_right = false; // Reverse
-  }
-  else {
-    Direction_right = true; // Forward
-  }
-   
-  if (Direction_right) {
-     
-    if (right_wheel_tick_count == encoder_maximum) {
-      right_wheel_tick_count = encoder_minimum;
-    }
-    else {
-      right_wheel_tick_count++;  
-    }    
-  }
-  else {
-    if (right_wheel_tick_count == encoder_minimum) {
-      right_wheel_tick_count = encoder_maximum;
-    }
-    else {
-      right_wheel_tick_count--;  
-    }   
-  }
-}
- 
-// Increment the number of ticks
-void left_wheel_tick() {
-   
-  // Read the value for the encoder for the left wheel
-  int val = digitalRead(ENC_IN_LEFT_B);
- 
-  if(val == LOW) {
-    Direction_left = true; // Reverse
-  }
-  else {
-    Direction_left = false; // Forward
-  }
-   
-  if (Direction_left) {
-    if (left_wheel_tick_count == encoder_maximum) {
-      left_wheel_tick_count = encoder_minimum;
-    }
-    else {
-      left_wheel_tick_count++;  
-    }  
-  }
-  else {
-    if (left_wheel_tick_count == encoder_minimum) {
-      left_wheel_tick_count = encoder_maximum;
-    }
-    else {
-      left_wheel_tick_count--;  
-    }   
-  }
-}
+//----------------------------------------------------------------------------
+//    프로그램명 	: IMU
+//
+//    만든이     	: Made by Baram ( chcbaram@paran.com )
+//
+//    날  짜     :
+//
+//    최종 수정  	:
+//
+//    MPU_Type	:
+//
+//    파일명     	: IMU.h
+//----------------------------------------------------------------------------
+#ifndef _IMU_H_
+#define _IMU_H_
+
+#include <inttypes.h>
+#include <Arduino.h>
+
+#include <SPI.h>
+// #include "MPU9250.h"
+#include "MadgwickAHRS.h"
+
+#include "imu_selector.h"
+
+#define IMU_OK			  0x00
+#define IMU_ERR_I2C		0x01
+
+
+
+class cIMU
+{
+public:
+	//cMPU9250 SEN;
+  cIMUDevice SEN;
+  //cICM20648 SEN;
+  
+  
+	int16_t angle[3];
+  float   rpy[3];
+  float   quat[4];
+  int16_t gyroData[3];
+  int16_t gyroRaw[3];
+  int16_t accData[3];
+  int16_t accRaw[3];
+  int16_t magData[3];
+  int16_t magRaw[3];
+
+  float ax, ay, az;
+  float gx, gy, gz;
+  float mx, my, mz;
+
+	bool bConnected;
+
+  float aRes;
+  float gRes;
+  float mRes;
+
+public:
+	cIMU();
+
+	uint8_t  begin( uint32_t hz = 200 );
+	uint16_t update( uint32_t option = 0 );
+
+private:
+  Madgwick filter;
+  uint32_t update_hz;
+  uint32_t update_us;
+
+	void computeIMU( void );
+
+};
+
+
+#endif
