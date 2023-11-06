@@ -237,11 +237,11 @@ void calc_pwm_values(const geometry_msgs::Twist& cmdVel) {
   // pwmRightReq = K_P * cmdVel.linear.x + K_b;
    if (cmdVel.linear.x >= 0.0) {
     // Calculate the PWM value given the desired velocity
-    pwmLeftReq = K_P * cmdVel.linear.x + K_b;
-    pwmRightReq = K_P * cmdVel.linear.x + K_b;
+    pwmLeftReq = K_P * cmdVel.linear.x;
+    pwmRightReq = K_P * cmdVel.linear.x;
   } else {
-    pwmLeftReq = K_P * cmdVel.linear.x - K_b;
-    pwmRightReq = K_P * cmdVel.linear.x - K_b;
+    pwmLeftReq = K_P * cmdVel.linear.x ;
+    pwmRightReq = K_P * cmdVel.linear.x;
   }
 
 
@@ -250,15 +250,32 @@ void calc_pwm_values(const geometry_msgs::Twist& cmdVel) {
  
     // Turn left
     if (cmdVel.angular.z > 0.0) {
-      // pwmLeftReq = -K_P * cmdVel.angular.z - K_b;
-      pwmRightReq = K_P * cmdVel.angular.z + K_b;
+      // pwmLeftReq = K_P * cmdVel.angular.z;
+      pwmLeftReq = K_P * cmdVel.angular.z;
+      // pwmRightReq = -PWM_MIN;
     }
     // Turn right    
     else {
-      pwmLeftReq = K_P * -1 * cmdVel.angular.z + K_b;
-      // pwmRightReq = -K_P * cmdVel.angular.z - K_b;
+      // pwmLeftReq = -PWM_MIN;
+      pwmRightReq = K_P * -1 * cmdVel.angular.z;
+      // pwmRightReq = K_P * -1 * cmdVel.angular.z;
     }
   }
+ik,k
+  // Check if we need to turn 
+  // if (cmdVel.angular.z != 0.0) {
+ 
+  //   // Turn left
+  //   if (cmdVel.angular.z > 0.0) {
+  //     pwmLeftReq = K_P * -1 * cmdVel.angular.z + K_b;
+  //     pwmRightReq = K_P * cmdVel.angular.z + K_b;
+  //   }
+  //   // Turn right    
+  //   else {
+  //     pwmLeftReq = K_P * -1 * cmdVel.angular.z + K_b;
+  //     pwmRightReq = K_P * cmdVel.angular.z + K_b;
+  //   }
+  // }
 
  
 
