@@ -7,6 +7,8 @@
 
     <!-- int property -->
     <param name="baudrate"         type="int" value="230400"/>  
+    <!-- <param name="baudrate"         type="int" value="512000"/>   -->
+
     <!-- 0:TYPE_TOF, 1:TYPE_TRIANGLE, 2:TYPE_TOF_NET -->
     <param name="lidar_type"       type="int" value="1"/>  
     <!-- 0:YDLIDAR_TYPE_SERIAL, 1:YDLIDAR_TYPE_TCP -->
