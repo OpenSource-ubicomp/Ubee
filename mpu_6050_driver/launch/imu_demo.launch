@@ -19,5 +19,5 @@
   </node>
   
   
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find mpu_6050_driver)/config/rviz_config.rviz"/> 
+  <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find mpu_6050_driver)/config/rviz_config.rviz"/>  -->
 </launch>
