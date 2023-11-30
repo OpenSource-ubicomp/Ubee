@@ -4,7 +4,7 @@ Ubeerobot is a suite of Open Source ROS compatible robots that aims to provide s
 
 ## Tutorial
 
-You can read the full tutorial how to build your robot [here](https://github.com/grassjelly/linorobot/wiki/1.-Getting-Started).
+You can read the full tutorial how to build your robot [here](https://github.com/OpenSource-ubicomp/Ubee/wiki).
 
 ## Multiplatform
 Supports multiple types of robot base:
