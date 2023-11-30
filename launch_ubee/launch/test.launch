@@ -5,7 +5,9 @@
   <node pkg="tf" type="static_transform_publisher" name="imu_broadcaster" args="0 0.06 0.02 0 0 0 base_link imu 30" />
   <node pkg="tf" type="static_transform_publisher" name="base_link_broadcaster" args="0 0 0.09 0 0 0 base_footprint base_link 30" />
   <!-- odom to base_footprint transform will be provided by the robot_pose_ekf node -->
- 
+  <!-- map to odom will be provided by the AMCL -->
+  <node pkg="tf" type="static_transform_publisher" name="map_to_odom" args="0 0 0 0 0 0 map odom 30" />
+
   <!-- Wheel Encoder Tick Publisher and Base Controller Using Arduino --> 
   <!-- motor_controller_diff_drive_2.ino is the Arduino sketch -->
   <!-- Subscribe: /cmd_vel -->
@@ -23,12 +25,14 @@
      
   <!-- IMU Data Publisher Using the BNO055 IMU Sensor -->
   <!-- Publish: /imu/data -->
-  <node ns="imu" name="imu_node" pkg="imu_bno055" type="bno055_i2c_node" respawn="true" respawn_delay="2">
-    <param name="device" type="string" value="/dev/i2c-1"/>
-    <param name="address" type="int" value="40"/> <!-- 0x28 == 40 is the default for BNO055 -->
-    <param name="frame_id" type="string" value="imu"/>
-  </node>
-     
+  <!-- <node ns="imu" name="imu_node" pkg="imu_bno055" type="bno055_i2c_node" respawn="true" respawn_delay="2"> -->
+    <!-- <param name="device" type="string" value="/dev/i2c-1"/> -->
+    <!-- <param name="address" type="int" value="40"/> 0x28 == 40 is the default for BNO055 -->
+    <!-- <param name="frame_id" type="string" value="imu"/> -->
+  <!-- </node> -->
+
+
+
   <!-- Extended Kalman Filter from robot_pose_ekf Node-->
   <!-- Subscribe: /odom, /imu_data, /vo -->
   <!-- Publish: /robot_pose_ekf/odom_combined -->
@@ -49,7 +53,7 @@
      
   <!-- Initial Pose and Goal Publisher -->
   <!-- Publish: /initialpose, /move_base_simple/goal -->
-  <node pkg="rviz" type="rviz" name="rviz">
+  <node pkg="rviz" type="rviz" name="rviz" args="-d /home/sion/Desktop/rviz_file/default.rviz">
   </node> 
  
   <!-- Subscribe: /initialpose, /move_base_simple/goal -->
@@ -57,4 +61,78 @@
   <node pkg="localization_data_pub" type="rviz_click_to_2d" name="rviz_click_to_2d">
   </node>   
  
+
+  <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ydlidar_ros_driver)/launch/lidar.rviz" /> -->
+
+
+
+  <!-- Map File -->
+  <arg name="map_file" default="/home/sion/1108_hectorslam.yaml"/>
+	
+  <!-- Map Server -->
+  <!-- Publish: /map, /map_metadata -->
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)" />
+	
+  <!-- Add AMCL example for differential drive robots for Localization -->
+  <!-- Subscribe: /scan, /tf, /initialpose, /map -->
+  <!-- Publish: /amcl_pose, /particlecloud, /tf -->
+  <include file="$(find amcl)/examples/amcl_diff.launch"/>
+	
+
+  <arg name="base_global_planner" default="navfn/NavfnROS"/>
+  <arg name="base_local_planner" default="dwa_local_planner/DWAPlannerROS"/>
+
+  <!-- Move Base Node -->
+  <!-- Subscribe: /move_base_simple/goal -->
+  <!-- Publish: /cmd_vel -->
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="$(find navstack_pub)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find navstack_pub)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find navstack_pub)/param/local_costmap_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find navstack_pub)/param/global_costmap_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find navstack_pub)/param/base_local_planner_params.yaml" command="load" />
+  </node>
+
+  <node name="ydlidar_lidar_publisher"  pkg="ydlidar_ros_driver"  type="ydlidar_ros_driver_node" output="screen" respawn="false" >
+    <!-- string property -->
+    <param name="port"         type="string" value="/dev/ttyUSB0"/>  
+    <!-- <param name="frame_id"     type="string" value="laser_frame"/> -->
+    <!-- <param name="frame_id"     type="string" value="laser"/> -->
+    <param name="frame_id"     type="string" value="base_link"/>
+
+    <param name="ignore_array"     type="string" value=""/>
+
+    <!-- int property -->
+    <param name="baudrate"         type="int" value="230400"/>  
+    <!-- <param name="baudrate"         type="int" value="512000"/>   -->
+
+    <!-- 0:TYPE_TOF, 1:TYPE_TRIANGLE, 2:TYPE_TOF_NET -->
+    <param name="lidar_type"       type="int" value="1"/>  
+    <!-- 0:YDLIDAR_TYPE_SERIAL, 1:YDLIDAR_TYPE_TCP -->
+    <param name="device_type"         type="int" value="0"/>  
+    <param name="sample_rate"         type="int" value="9"/>  
+    <param name="abnormal_check_count"         type="int" value="4"/>  
+
+    <!-- bool property -->
+    <param name="resolution_fixed"    type="bool"   value="true"/>
+    <param name="auto_reconnect"    type="bool"   value="true"/>
+    <param name="reversion"    type="bool"   value="true"/>
+    <param name="inverted"    type="bool"   value="true"/>
+    <param name="isSingleChannel"    type="bool"   value="false"/>
+    <param name="intensity"    type="bool"   value="false"/>
+    <param name="support_motor_dtr"    type="bool"   value="false"/>
+    <param name="invalid_range_is_inf"    type="bool"   value="false"/>
+    <param name="point_cloud_preservative"    type="bool"   value="false"/>
+
+    <!-- float property -->
+    <param name="angle_min"    type="double" value="-180" />
+    <param name="angle_max"    type="double" value="180" />
+    <param name="range_min"    type="double" value="0.1" />
+    <param name="range_max"    type="double" value="16.0" />
+    <param name="frequency"    type="double" value="10.0"/>
+  </node>
+  <!-- <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser"
+    args="0.0 0.0 0.2 0.0 0.0 0.0 /base_link /laser" /> -->
+
+
 </launch>
