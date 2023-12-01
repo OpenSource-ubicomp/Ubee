@@ -78,5 +78,20 @@ Sion Jeon edited this page on Dec 1, 2023
 
 
 
+## LiDAR configuration
+![image](https://github.com/OpenSource-ubicomp/Ubee/assets/57317636/f491636f-4a92-4838-9db6-efb6f4926086)
+
+**launch base driver**
+```
+roslaunch launch_ubee test.launch
+```
+**launch lidar driver**
+```
+roslaunch ydlidar_ros_driver lidar_view.launch
+```
+
+## Creatin map
+![image](https://github.com/OpenSource-ubicomp/Ubee/assets/57317636/34a14aae-e7d1-44dd-aad5-c91e69790be6)
+
 
 
