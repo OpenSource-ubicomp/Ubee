@@ -91,8 +91,22 @@ roslaunch launch_ubee test.launch
 rosrun teleop_twist_keyboard teleop_twist_keyboard.py
 ```
 
+## 2. IMU Sensor Test
+![MPU6050_IMU_sensor_ROS_test_with_Filter](https://github.com/OpenSource-ubicomp/Ubee/assets/57317636/ae1bc327-7c20-4157-a884-9eded51104aa)
+
+
+**launch imu sensor driver**
+```
+roslaunch mpu_6050_driver imu.launch
+```
+**rviz**
+```
+rviz
+```
+
+
 ## 2. LiDAR configuration
-![image](https://github.com/OpenSource-ubicomp/Ubee/assets/57317636/f491636f-4a92-4838-9db6-efb6f4926086)
+![2d_lidar_test-2023-11-05_17 33 04](https://github.com/OpenSource-ubicomp/Ubee/assets/57317636/e9ec0e4a-4fe7-4048-a13b-ca8151ca01ee)
 
 **launch base driver**
 ```
