@@ -10,6 +10,8 @@ You can read the full tutorial how to build your robot [here](https://github.com
 Supports multiple types of robot base:
 - 2WD
 
+
+# Hardware
 ## 3D modeling
 ![image](https://github.com/OpenSource-ubicomp/Ubee/assets/57317636/c74b56ab-6a60-4927-b323-e1f80d803980)
 
@@ -76,9 +78,20 @@ Sion Jeon edited this page on Dec 1, 2023
 * 32 * T-NUT [link](https://www.devicemart.co.kr/goods/view?no=12530572)
 * 32 * BLOT M4X15
 
+# Sofrware
 
+## 1. Teleop Control
+Control Using keyboard
+**launch base driver**
+```
+roslaunch launch_ubee test.launch
+```
+**launch teleop keyboard**
+```
+rosrun teleop_twist_keyboard teleop_twist_keyboard.py
+```
 
-## LiDAR configuration
+## 2. LiDAR configuration
 ![image](https://github.com/OpenSource-ubicomp/Ubee/assets/57317636/f491636f-4a92-4838-9db6-efb6f4926086)
 
 **launch base driver**
@@ -90,8 +103,20 @@ roslaunch launch_ubee test.launch
 roslaunch ydlidar_ros_driver lidar_view.launch
 ```
 
-## Creatin map
-![image](https://github.com/OpenSource-ubicomp/Ubee/assets/57317636/34a14aae-e7d1-44dd-aad5-c91e69790be6)
+## 3. Creatin map
+![image](https://github.com/OpenSource-ubicomp/Ubee/assets/57317636/20d4f21e-7d0a-42d6-9b86-6d96aee66381)
 
+**launch base driver**
+```
+roslaunch launch_ubee test.launch
+```
+**launch lidar driver**
+```
+roslaunch ydlidar_ros_driver lidar.launch
+```
+**launch slam driver**
+```
+roslaunch hector_slam_launch tutorial.launch
+```
 
 
