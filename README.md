@@ -134,3 +134,8 @@ roslaunch hector_slam_launch tutorial.launch
 ```
 
 
+## reference
+[1] https://www.youtube.com/watch?v=Uz_i_sjVhIM
+
+[2] https://automaticaddison.com/how-to-set-up-the-ros-navigation-stack-on-a-robot/
+
