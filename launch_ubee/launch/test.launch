@@ -93,7 +93,7 @@
     <rosparam file="$(find navstack_pub)/param/base_local_planner_params.yaml" command="load" />
   </node>
 
-  <include file="$(find ydlidar_ros_driver)/launch/G6_G7.launch" />
+  <include file="$(find ydlidar)/launch/lidar.launch" />
 
 
 
