@@ -31,7 +31,7 @@
 #include "ydlidar_config.h"
 #include <limits>       // std::numeric_limits
 
-#define SDKROSVerision "1.0.2"
+#define SDKROSVerision "1.0.1"
 
 CYdLidar laser;
 
@@ -59,8 +59,8 @@ int main(int argc, char **argv) {
 //    nh.advertise<ydlidar_ros_driver::LaserFan>("laser_fan", 1);
 
   ros::NodeHandle nh_private("~");
-  std::string str_optvalue = "/dev/ttyUSB0";
-  nh_private.param<std::string>("port", str_optvalue, "/dev/ttyUSB0");
+  std::string str_optvalue = "/dev/ydlidar";
+  nh_private.param<std::string>("port", str_optvalue, "/dev/ydlidar");
   ///lidar port
   laser.setlidaropt(LidarPropSerialPort, str_optvalue.c_str(),
                     str_optvalue.size());
@@ -94,15 +94,12 @@ int main(int argc, char **argv) {
   optval = 4;
   nh_private.param<int>("abnormal_check_count", optval, 4);
   laser.setlidaropt(LidarPropAbnormalCheckCount, &optval, sizeof(int));
-  //intensity bit count
-  optval = 10;
-  nh_private.param<int>("intensity_bit", optval, 10);
-  laser.setlidaropt(LidarPropIntenstiyBit, &optval, sizeof(int));
+
 
   //////////////////////bool property/////////////////
   /// fixed angle resolution
   bool b_optvalue = false;
-  nh_private.param<bool>("resolution_fixed", b_optvalue, true);
+  nh_private.param<bool>("fixed_resolution", b_optvalue, true);
   laser.setlidaropt(LidarPropFixedResolution, &b_optvalue, sizeof(bool));
   /// rotate 180
   nh_private.param<bool>("reversion", b_optvalue, true);

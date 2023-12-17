@@ -30,6 +30,8 @@
     <param name="m_bSingle_TF_option" type="bool" value="true" /> <!--false-->
   </node>
 
+  <node pkg="mpu_6050_driver" type="tf_broadcaster_imu.py" name="tf_broadcaster"/>
+
 
   <!-- Extended Kalman Filter from robot_pose_ekf Node-->
   <!-- Subscribe: /odom, /imu_data, /vo -->
@@ -91,7 +93,7 @@
     <rosparam file="$(find navstack_pub)/param/base_local_planner_params.yaml" command="load" />
   </node>
 
-  <include file="$(find ydlidar_ros_driver)/launch/G6.launch" />
+  <include file="$(find ydlidar_ros_driver)/launch/G6_G7.launch" />
 
 
 

@@ -375,6 +375,7 @@ int main (int argc, char** argv)
 
 			imu_data_msg.header.stamp = measurement_time;
 			imu_data_msg.header.frame_id = tf_prefix_ + "/imu_link";  // "imu_link"
+			// imu_data_msg.header.frame_id = tf_prefix_ + "/base_link";  // "base_link"
 
 			// publish the IMU data
 			imu_data_pub.publish(imu_data_msg);

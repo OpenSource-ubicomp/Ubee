@@ -6,7 +6,7 @@
     default="False" />
   <param
     name="robot_description"
-    textfile="$(find ydlidar)/urdf/ydlidar.urdf" />
+    textfile="$(find ydlidar_ros)/urdf/ydlidar.urdf" />
   <param
     name="use_gui"
     value="$(arg gui)" />
@@ -18,7 +18,7 @@
     name="robot_state_publisher"
     pkg="robot_state_publisher"
     type="state_publisher" />
- <node name="ydlidar_node"  pkg="ydlidar"  type="ydlidar_node" output="screen">
+ <node name="ydlidar_node"  pkg="ydlidar_ros"  type="ydlidar_node" output="screen">
     <param name="port"         type="string" value="/dev/ydlidar"/>  
     <param name="baudrate"     type="int"    value="115200"/>
     <param name="frame_id"     type="string" value="laser_frame"/>
@@ -38,5 +38,5 @@
     name="rviz"
     pkg="rviz"
     type="rviz"
-    args="-d $(find ydlidar)/ydlidar.rviz" />
+    args="-d $(find ydlidar_ros)/ydlidar.rviz" />
 </launch>
