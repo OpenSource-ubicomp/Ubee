@@ -117,7 +117,7 @@ roslaunch launch_ubee test.launch
 roslaunch ydlidar_ros_driver lidar_view.launch
 ```
 
-## 3. Creatin map
+## 3. Creating map
 ![image](https://github.com/OpenSource-ubicomp/Ubee/assets/57317636/20d4f21e-7d0a-42d6-9b86-6d96aee66381)
 
 **launch base driver**
