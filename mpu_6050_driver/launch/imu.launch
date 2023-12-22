@@ -1,0 +1,14 @@
+<launch>
+  <node pkg="mpu_6050_driver" type="imu_node.py" name="imu_node"/>
+
+  <node name="imu_filter_node_for_orientation" pkg="imu_complementary_filter" type="complementary_filter_node" >
+  </node>
+
+  <!-- <node name="imu_filter_node_for_orientation" pkg="imu_filter_madgwick" type="imu_filter_node" >
+  </node>
+   -->
+  <node pkg="mpu_6050_driver" type="tf_broadcaster_imu.py" name="tf_broadcaster"/>
+
+  <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find mpu_6050_driver)/config/rviz_config.rviz"/>  -->
+
+</launch>
